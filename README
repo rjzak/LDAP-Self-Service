@@ -1,0 +1,23 @@
+LDAP Self Service
+Version 0.1 (10 May 2013)
+Richard Zak <richard.j.zak@gmail.com>
+Twitter: @rjzak
+
+INTRO
+
+Welcome to my LDAP Self Service application.  This web application is a bit rough, but works.  It requires PHP 5+ with LDAP support.  It's only been tested with OpenLDAP and PHP 5 on Ubuntu Server 12.04.1.  I think it should work with any LDAP server, though it most certainly will NOT work with Microsoft Active Directory.  I created this application in my spare time to help me with the Sys Admin part of my job, so the main function is allowing users to change their password.  I then decided to take it a step further and make a proper web management application for LDAP, since none really exist, except Webmin, which is awesome but isn't for the regular user (I tried).  I wanted to make something that is lightweight, as in the L in LDAP. This project was also one of my first attempts at HTML 5.
+
+USAGE
+
+You are free to use this application, and modify it as you see fit.  I'm releasing it under the GNU Public License.
+
+TO-DO
+
+* Show a message if the user's name or email was incorrect.
+* Show a message indicating a return to the login screen because of session timeout.
+* Add forgotten password functionality.  EMail the user with a temporary password.
+* Make the pages look nicer.
+* Allow the site admin to toggle encryption: None, TLS, SSL.
+* Allow the site admin to control password complexity requirements.
+* Allow administrators to edit other users.
+* Generate LDAP user authentication configuration files for Linux workstations.
