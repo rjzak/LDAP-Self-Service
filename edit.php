@@ -66,7 +66,11 @@ if ($config["showGroupMembership"]) {
 					<?php	if ($config["userEditableEmail"]) { ?>
 						<td><label for="email">E-Mail</label></td>
 						<td>
-							<input type="email" name="email" id="email" value="<?=$info[0]["mail"][0]?>" title="Your email address" />
+							<?php if (isset($info[0]["mail"][0])) { ?>
+								<input type="email" name="email" id="email" value="<?=$info[0]["mail"][0]?>" title="Your email address" />
+							<?php } else { ?>
+								<input type="email" name="email" id="email" value="" title="Your email address" />
+							<?php } ?>
 						</td>
 					<?php } else { ?>
 						<td>E-Mail</td>
@@ -95,29 +99,57 @@ if ($config["showGroupMembership"]) {
 				<?php if ($config["userEditablePhones"]) { ?>
 					<tr>
 						<td><label for="phone">Telephone</label></td>
-						<td><input type="tel" name="phone" id="phone" value="<?=$info[0]["telephonenumber"][0]?>" /></td>
+						<td>
+							<?php if (isset($info[0]["telephonenumber"][0])) { ?>
+								<input type="tel" name="phone" id="phone" value="<?=$info[0]["telephonenumber"][0]?>" />
+							<?php } else { ?>
+								<input type="tel" name="phone" id="phone" value="" />
+							<?php } ?>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="mobile">Mobile Phone</label></td>
-						<td><input type="tel" name="mobile" id="mobile" value="<?=$info[0]["mobile"][0]?>" /></td>
+						<td>
+							<?php if (isset($info[0]["mobile"][0])) { ?>
+								<input type="tel" name="mobile" id="mobile" value="<?=$info[0]["mobile"][0]?>" />
+							<?php } else { ?>
+								<input type="tel" name="mobile" id="mobile" value="" />
+							<?php } ?>
+						</td>
 					</tr>
 				<?php } else { ?>
 				 	<tr>
                                         	<td>Telephone</td>
-                                        	<td><?=$info[0]["telephonenumber"][0]?></td>
+                                        	<td>
+							<?php if (isset($info[0]["telephonenumber"][0])) { ?>
+								<?=$info[0]["telephonenumber"][0]?>
+							<?php } ?>
+						</td>
                                 	</tr>
                                 	<tr>
                                         	<td>Mobile Phone</td>
-                                        	<td><?=$info[0]["mobile"][0]?></td>
+                                        	<td>
+							<?php if (isset($info[0]["mobile"][0])) { ?>
+								<?=$info[0]["mobile"][0]?>
+							<?php } ?>
+						</td>
                                 	</tr>
 				<?php } ?>
 				<tr>
 					<td>Title</td>
-					<td><?=$info[0]["title"][0]?></td>
+					<td>
+						<?php if (isset($info[0]["title"][0])) { ?>
+							<?=$info[0]["title"][0]?>
+						<?php } ?>
+					</td>
 				</tr>
 				<tr>
 					<td>Org</td>
-					<td><?=$info[0]["o"][0]?></td>
+					<td>
+						<?php if (isset($info[0]["o"][0])) { ?>
+							<?=$info[0]["o"][0]?>
+						<?php } ?>
+					</td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr>

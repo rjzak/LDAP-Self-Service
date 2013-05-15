@@ -25,13 +25,13 @@ if ($_SESSION['timeout'] + 10 * 60 < time()) { # time out after 10 minutes of in
 # LDAP server and environment configuration
 #
 
-$config["ldapServer"] = "your.ldap.server.example.com";
-$config["encryption"] = ""; # Not yet used
-$config["searchBase"] = "dc=example,dc=com";
+$config["ldapServer"] = "127.0.0.1";
+$config["encryption"] = ""; 
+$config["searchBase"] = "dc=nodomain";
 $config["peopleOU"]   = "ou=people";
 $config["groupsOU"]   = "ou=groups";
-$config["dirAdmin"]   = "cn=admin".$config["searchBase"];
-$config["dirAdminPW"] = "youradminpasswordhere";
+$config["dirAdmin"]   = "cn=admin,".$config["searchBase"];
+$config["dirAdminPW"] = "password";
 
 #
 # Site configuration

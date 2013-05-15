@@ -7,11 +7,12 @@ require_once("config.php");
 require_once("functions.php");
 
 $_SESSION['timeout'] = time(); # Update the timeout, we want to timeout based on usage, not when logged in.
-
 $_SESSION['statMsg'] = "";
 
 $conn = ldap_connect( $config["ldapServer"] ) or die("Unable to connect to LDAP");
-ldap_start_tls($conn) or die("Unable to StartTLS");
+if ($config["encryption"] == "tls") {
+	ldap_start_tls($conn) or die("Unable to StartTLS");
+}
 ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 #$bind = ldap_bind($conn, $_SESSION['userDN'], $_POST['oldpass']); # This didn't allow updating anything other than password.
 $bind = ldap_bind($conn, $config['dirAdmin'], $config['dirAdminPW']);
