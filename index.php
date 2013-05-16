@@ -7,7 +7,6 @@ require_once("config.php");
 <html lang="en">
 <head>
 	<title>LDAP User Management</title>
-
 	<style type="text/css">
 		:invalid {
 			border: 2px solid #ff0000;
@@ -30,7 +29,13 @@ require_once("config.php");
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
-					<td><input type="submit" value="Login" />
+					<td>
+						<input type="submit" value="Login" /> 
+						<?php if ($config["allowPKIlogin"] ) { ?>
+							&nbsp; &nbsp;
+							<input type="button" value="PKI Login" onClick="location.href='pki.php';" />
+						<?php } ?>
+					</td>
 				</tr>
 			</tbody>
 		</table>

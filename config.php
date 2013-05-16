@@ -60,5 +60,6 @@ $config["showGroupMembership"] = true;
 $config["userEditableEmail"] = true;
 $config["userEditableShell"] = true;
 $config["userEditablePhones"] = true;
+$config["allowPKIlogin"] = true;
 
 ?>

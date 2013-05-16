@@ -1,3 +1,7 @@
+Version 0.3 -- 15 May 2013
+- Added PKI login.  Requires some web server configuration.
+- Added TLS encryption check for edit.php.
+
 Version 0.2 -- 14 May 2013
 - Added check for encryption.  Doesn't yet support SSL, but won't attempt a start TLS if not using TLS.
 - Fixed default distinguished name for admin, added the needed comma between the admin name and default base.

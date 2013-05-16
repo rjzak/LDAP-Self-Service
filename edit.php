@@ -15,7 +15,10 @@ $userPW = $_SESSION['userPW'];
 
 $ds = ldap_connect( $config["ldapServer"] ) or die("Could not reach LDAP server.");
 ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-#$bind = ldap_bind($ds, $userDN, $userPW) or die("Cound not bind to LDAP server.");
+if ($config["encryption"] == "tls") {
+	ldap_start_tls($ds) or die("Failed to Start TLS: ".ldap_error($ds));
+}
+
 $bind = ldap_bind($ds, $config["dirAdmin"], $config["dirAdminPW"]) or die("Cound not bind to LDAP server.");
 
 $filter = "(uid=$userID)";
@@ -52,7 +55,6 @@ if ($config["showGroupMembership"]) {
 	</style>
 </head>
 <body>
-
 <center>
 	<form method="post" action="update.php">
 		<table>
@@ -66,11 +68,7 @@ if ($config["showGroupMembership"]) {
 					<?php	if ($config["userEditableEmail"]) { ?>
 						<td><label for="email">E-Mail</label></td>
 						<td>
-							<?php if (isset($info[0]["mail"][0])) { ?>
-								<input type="email" name="email" id="email" value="<?=$info[0]["mail"][0]?>" title="Your email address" />
-							<?php } else { ?>
-								<input type="email" name="email" id="email" value="" title="Your email address" />
-							<?php } ?>
+							<input type="email" name="email" id="email" value="<?=$info[0]["mail"][0]?>" title="Your email address" />
 						</td>
 					<?php } else { ?>
 						<td>E-Mail</td>
@@ -99,74 +97,48 @@ if ($config["showGroupMembership"]) {
 				<?php if ($config["userEditablePhones"]) { ?>
 					<tr>
 						<td><label for="phone">Telephone</label></td>
-						<td>
-							<?php if (isset($info[0]["telephonenumber"][0])) { ?>
-								<input type="tel" name="phone" id="phone" value="<?=$info[0]["telephonenumber"][0]?>" />
-							<?php } else { ?>
-								<input type="tel" name="phone" id="phone" value="" />
-							<?php } ?>
-						</td>
+						<td><input type="tel" name="phone" id="phone" value="<?=$info[0]["telephonenumber"][0]?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="mobile">Mobile Phone</label></td>
-						<td>
-							<?php if (isset($info[0]["mobile"][0])) { ?>
-								<input type="tel" name="mobile" id="mobile" value="<?=$info[0]["mobile"][0]?>" />
-							<?php } else { ?>
-								<input type="tel" name="mobile" id="mobile" value="" />
-							<?php } ?>
-						</td>
+						<td><input type="tel" name="mobile" id="mobile" value="<?=$info[0]["mobile"][0]?>" /></td>
 					</tr>
 				<?php } else { ?>
 				 	<tr>
-                                        	<td>Telephone</td>
-                                        	<td>
-							<?php if (isset($info[0]["telephonenumber"][0])) { ?>
-								<?=$info[0]["telephonenumber"][0]?>
-							<?php } ?>
-						</td>
-                                	</tr>
-                                	<tr>
-                                        	<td>Mobile Phone</td>
-                                        	<td>
-							<?php if (isset($info[0]["mobile"][0])) { ?>
-								<?=$info[0]["mobile"][0]?>
-							<?php } ?>
-						</td>
-                                	</tr>
+                    	<td>Telephone</td>
+                        <td><?=$info[0]["telephonenumber"][0]?></td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Phone</td>
+                        <td><?=$info[0]["mobile"][0]?></td>
+                    </tr>
 				<?php } ?>
 				<tr>
 					<td>Title</td>
-					<td>
-						<?php if (isset($info[0]["title"][0])) { ?>
-							<?=$info[0]["title"][0]?>
-						<?php } ?>
-					</td>
+					<td><?=$info[0]["title"][0]?></td>
 				</tr>
 				<tr>
 					<td>Org</td>
-					<td>
-						<?php if (isset($info[0]["o"][0])) { ?>
-							<?=$info[0]["o"][0]?>
-						<?php } ?>
-					</td>
+					<td><?=$info[0]["o"][0]?></td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr>
 					<td colspan="2" align="center">Change Password</td>
 				</tr>
+				<?php if ($userPW != "SSL_SIGNIN_NO_PASSWORD_PROVIDED") { ?>
+					<tr>
+						<td><label for="oldpass">Current Password</label></td>
+						<td><input type="password" name="oldpass" id="oldpass" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
+					</tr>
+				<?php } ?>
 				<tr>
-					<td><label for="oldpass">Current Password</label></td>
-					<td><input type="password" name="oldpass" id="oldpass" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
-				</tr>
+                        <td><label for="newpass">New Password</label></td>
+                        <td><input type="password" name="newpass" id="newpass" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
+                </tr>
 				<tr>
-                                        <td><label for="newpass">New Password</label></td>
-                                        <td><input type="password" name="newpass" id="newpass" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
-                                </tr>
-				<tr>
-                                        <td><label for="newpassconf">Confirm New Password</label></td>
-                                        <td><input type="password" name="newpassconf" id="newpassconf" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
-                                </tr>
+                        <td><label for="newpassconf">Confirm New Password</label></td>
+                        <td><input type="password" name="newpassconf" id="newpassconf" length="10" pattern=".{5,}" title="Passwords are at least 5 characters" autocomplete="off" /></td>
+                </tr>
 				<tr>
 					<td>&nbsp;</td>
 					<td align="right">
@@ -194,7 +166,6 @@ if ($config["showGroupMembership"]) {
 									echo "<tr><td>&nbsp;</td><td>".$g['cn'][0]."</td></tr>";
 								}
 							}
-
 						?>
 				<?php } ?>
 			</tbody>
